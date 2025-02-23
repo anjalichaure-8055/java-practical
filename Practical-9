@@ -1,0 +1,153 @@
+public class Practical9 
+{
+   
+    public static int[] generateRandomNumbers() 
+    {
+        int[] numbers = new int[10];
+        
+        for (int i = 0; i < 10; i++) 
+        {
+            numbers[i] = (int) ((System.nanoTime() % 50) + 1);
+        }
+
+        return numbers;
+    }
+    public static long calculateFactorialIterativeTime(int number) 
+    {
+        long startTime = System.nanoTime();
+        
+        int result = 1;
+        for (int i = 1; i <= number; i++) 
+        {
+            result = result * i;
+        }
+
+        long endTime = System.nanoTime();
+        
+        return endTime - startTime; 
+    }
+
+    
+    private static int calculateFactorialRecursive(int number) 
+    {   
+        
+        if (number == 1 || number == 0) {
+            return 1;
+        }
+        return number * calculateFactorialRecursive(number - 1);
+    }
+
+    
+    public static long calculateFactorialRecursiveTime(int number) {
+        long startTime = System.nanoTime();
+
+        int result = calculateFactorialRecursive(number);
+
+        long endTime = System.nanoTime();
+        return endTime - startTime;
+    }
+
+    
+    public static void compareFactorialMethods() 
+    {
+        int[] numbers = generateRandomNumbers(); 
+
+        long totalIterativeTime = 0;
+        long totalRecursiveTime = 0;
+
+       
+        for (int number : numbers) 
+        {
+            long iterativeTimeSum = 0;
+            long recursiveTimeSum = 0;
+
+            
+            for (int i = 0; i < 5; i++) 
+            {
+                iterativeTimeSum += calculateFactorialIterativeTime(number);
+                recursiveTimeSum += calculateFactorialRecursiveTime(number);
+            }
+
+            
+            long averageIterativeTime = iterativeTimeSum / 5;
+            long averageRecursiveTime = recursiveTimeSum / 5;
+
+            
+            totalIterativeTime += averageIterativeTime;
+            totalRecursiveTime += averageRecursiveTime;
+        }
+
+        
+        if (totalIterativeTime < totalRecursiveTime) 
+        {
+            System.out.println("The iterative method is faster.");
+        } 
+        else 
+        {
+            System.out.println("The recursive method is faster.");
+        } 
+    }
+    
+    public static String generateRandomString(int length) 
+    {
+        String result = "";
+        for (int i = 0; i < length; i++) 
+        {
+            
+            int randomValue = (int) (System.nanoTime() % 52);
+            if (randomValue < 26) 
+            {
+               
+                result += (char) (randomValue + 65);
+            }
+            else 
+            {
+                
+                result += (char) (randomValue - 26 + 97); 
+            }
+        }
+        return result.toString();
+    }
+
+    
+    
+    public static void measureStringConcatenationTime(int length) 
+    {
+        String str = generateRandomString(length);
+
+        
+        long startTime = System.nanoTime();
+        String concatenatedString = str + str;
+        long endTime = System.nanoTime();
+        long stringConcatenationTime = endTime - startTime; 
+
+       
+        startTime = System.nanoTime();
+        StringBuilder stringBuilder = new StringBuilder(str);
+        stringBuilder.append(str);
+        endTime = System.nanoTime();
+        long stringBuilderConcatenationTime = endTime - startTime; 
+
+        
+        startTime = System.nanoTime();
+        StringBuffer stringBuffer = new StringBuffer(str);
+        stringBuffer.append(str);
+        endTime = System.nanoTime();
+        long stringBufferConcatenationTime = endTime - startTime; 
+
+       
+        if (stringConcatenationTime < stringBuilderConcatenationTime && stringConcatenationTime < stringBufferConcatenationTime)
+        {
+            System.out.println("String concatenation is the fastest.");
+        } 
+        else if (stringBuilderConcatenationTime < stringConcatenationTime && stringBuilderConcatenationTime < stringBufferConcatenationTime) 
+        {
+            System.out.println("StringBuilder concatenation is the fastest.");
+        } 
+        else
+        {
+            System.out.println("StringBuffer concatenation is the fastest.");
+        }
+     
+    }
+}
